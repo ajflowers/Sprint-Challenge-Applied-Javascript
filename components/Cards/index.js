@@ -17,3 +17,108 @@
 // </div>
 //
 // Create a card for each of the articles and add the card to the DOM.
+
+
+// //test object copy/pasted from response data
+// testObj = {
+//     authorName: "FIDO WALKSALOT",
+//     authorPhoto: "./assets/fido.jpg",
+//     headline: "Bootstrap 5: Get a Sneak Peak at all the New Features"
+// }
+// console.log(testObj);
+
+let cardsDiv = document.querySelector('.cards-container');
+
+function makeCard(data) {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const cardHeadline = document.createElement('div');
+    cardHeadline.className = 'headline';
+    cardHeadline.append(data.headline);
+
+
+    const cardAuthor = document.createElement('div');
+    cardAuthor.className = 'author';
+
+
+    const cardImgBox = document.createElement('div');
+    cardImgBox.className = 'img-container';
+
+
+    const cardImg = document.createElement('img');
+    cardImg.setAttribute('src', data.authorPhoto);
+
+    const cardSpan = document.createElement('span');
+    cardSpan.append(`By ${data.authorName}`);
+
+    
+    
+    cardImgBox.appendChild(cardImg);
+    cardAuthor.appendChild(cardImgBox);
+    cardAuthor.appendChild(cardSpan);
+    card.appendChild(cardHeadline);
+    card.appendChild(cardAuthor);
+
+    // console.log(card);
+    return card;   
+
+}
+
+
+
+let articles = {};
+let articlesKeys = [];
+let articleStories = []
+ 
+
+// console.log(cardsDiv)
+
+function returnStoryObjects(topic) {
+    let topicArray = articles[`${topic}`];
+    console.log(topicArray);
+    topicArray.forEach(item => {
+        articleStories.push(item)
+    })
+    return;
+}
+
+//cardsDiv.appendChild(makeCard(testObj));
+
+
+axios.get('https://lambda-times-backend.herokuapp.com/articles')
+    .then((response) => {
+        //save raw data for easier parsing
+        articles = (response.data.articles);
+        console.log(articles); 
+    })
+    .then(() => {
+        //get array of key values
+        articlesKeys = Object.keys(articles);
+        console.log(articlesKeys);
+    })
+    .then(() => {
+        //foreach over key value array
+        articlesKeys.forEach(topic => {
+            returnStoryObjects(topic);        
+        })
+        console.log(articleStories);
+    })
+    .then(() => {
+        articleStories.forEach(story => {
+            newCard = makeCard(story);
+            cardsDiv.appendChild(newCard);
+        })
+
+
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+
+
+    //response.data.articles = object w/ 6 keyvalues
+    //articles keyvalues = topics
+    //each object value in .articles.topic = array of n objects 
+    //objects in array contain almost all data needed
+

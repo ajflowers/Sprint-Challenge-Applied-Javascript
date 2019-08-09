@@ -9,7 +9,6 @@
 //    <div class="tab">topic here</div>
 
 let tabBar = document.querySelector('.topics');
-console.log(tabBar);
 
 function makeTab(topic) {
     const newTab = document.createElement('div');
@@ -23,16 +22,13 @@ let topicArray = [];
 axios.get('https://lambda-times-backend.herokuapp.com/topics')
     .then((response) => {
         topicArray = response.data.topics;
-        console.log(topicArray);
     })
     .then(() => {
         topicArray.forEach(topic => {
-            tabBar.appendChild(makeTab(topic));
+            tabBar.appendChild(makeTab(topic))
         })
     })
     
     .catch((err) => {
         console.log(err);
     })
-
-tabBar.appendChild(tabsToAdd);
