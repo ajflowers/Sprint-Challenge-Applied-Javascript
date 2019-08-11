@@ -20,9 +20,12 @@
 
 let currentImg = 0
 
-function changeImg(n) {
-  showImg(currentImg += n);
-  console.log(n);
+function leftClick() {
+  showImg(currentImg -= 1)
+}
+
+function rightClick() {
+  showImg(currentImg += 1);
 }
 
 const imgArray = [
@@ -39,11 +42,10 @@ function makeCarousel(images) {
   leftBtn.className = 'left-button';
   leftBtn.append('<');
   leftBtn.addEventListener('click', (event) => {
-    changeImg(-1);
+    leftClick();
   });
 
   carousel.appendChild(leftBtn);
-
 
   images.forEach(image => {
     let newImg = document.createElement('img');
@@ -51,11 +53,13 @@ function makeCarousel(images) {
     carousel.appendChild(newImg);
   })
 
+  carousel.children[1].style.display = 'block'
+
   const rightBtn = document.createElement('div');
   rightBtn.className = 'right-button';
   rightBtn.append('>');
   rightBtn.addEventListener('click', (event) => {
-    changeImg(1);
+    rightClick();
   });
 
   carousel.appendChild(rightBtn);
@@ -73,7 +77,7 @@ function showImg (n) {
   if(n < 0) {
     currentImg = carouselPics.length-1;
   }
-  if (n >= carouselPics.length) {
+    if (n >= carouselPics.length) {
     currentImg = 0;
   }
   carouselPics.forEach(pic =>{
@@ -84,7 +88,7 @@ function showImg (n) {
   console.log(carouselPics.length);  
 }
 
-showImg(currentImg);
+// showImg(currentImg);
 
 
 /*
