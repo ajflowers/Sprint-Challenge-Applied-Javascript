@@ -17,3 +17,85 @@
     <div class="right-button"> > </div>
   </div>
 */
+
+let currentImg = 0
+
+function changeImg(n) {
+  showImg(currentImg += n);
+  console.log(n);
+}
+
+const imgArray = [
+  './assets/carousel/mountains.jpeg', 
+  './assets/carousel/computer.jpeg', 
+  './assets/carousel/trees.jpeg', 
+  './assets/carousel/turntable.jpeg']
+
+function makeCarousel(images) {
+  const carousel = document.createElement('div');
+  carousel.className = 'carousel';
+  
+  const leftBtn = document.createElement('div')
+  leftBtn.className = 'left-button';
+  leftBtn.append('<');
+  leftBtn.addEventListener('click', (event) => {
+    changeImg(-1);
+  });
+
+  carousel.appendChild(leftBtn);
+
+
+  images.forEach(image => {
+    let newImg = document.createElement('img');
+    newImg.setAttribute('src', image);
+    carousel.appendChild(newImg);
+  })
+
+  const rightBtn = document.createElement('div');
+  rightBtn.className = 'right-button';
+  rightBtn.append('>');
+  rightBtn.addEventListener('click', (event) => {
+    changeImg(1);
+  });
+
+  carousel.appendChild(rightBtn);
+
+  return carousel;
+
+}
+
+const carouselContainer = document.querySelector('.carousel-container');
+let carousel = makeCarousel(imgArray);
+carouselContainer.appendChild(carousel);
+
+function showImg (n) {
+  var carouselPics = document.querySelectorAll('.carousel img');
+  if(n < 0) {
+    currentImg = carouselPics.length-1;
+  }
+  if (n >= carouselPics.length) {
+    currentImg = 0;
+  }
+  carouselPics.forEach(pic =>{
+    pic.style.display = 'none';
+  })
+  carouselPics[currentImg].style.display = 'block';
+  console.log(carouselPics);
+  console.log(carouselPics.length);  
+}
+
+showImg(currentImg);
+
+
+/*
+let currentImg = 
+
+
+while(currentImg >=1 && currentImg <=4) {
+something something if nth image position is currentImg display = block else display = false
+}
+
+leftClick(){}
+
+rightClick(){}
+*/

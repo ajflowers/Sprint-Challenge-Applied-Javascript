@@ -28,6 +28,7 @@
 // console.log(testObj);
 
 let cardsDiv = document.querySelector('.cards-container');
+let cardsToPage = document.createDocumentFragment();
 
 function makeCard(data) {
     const card = document.createElement('div');
@@ -68,15 +69,16 @@ function makeCard(data) {
 
 
 let articles = {};
-let articlesKeys = [];
+let articlesArray = [];
 let articleStories = []
+let articleCards = [];
  
 
 // console.log(cardsDiv)
 
 function returnStoryObjects(topic) {
     let topicArray = articles[`${topic}`];
-    console.log(topicArray);
+    // console.log(topicArray);
     topicArray.forEach(item => {
         articleStories.push(item)
     })
@@ -90,12 +92,31 @@ axios.get('https://lambda-times-backend.herokuapp.com/articles')
     .then((response) => {
         //save raw data for easier parsing
         articles = (response.data.articles);
-        console.log(articles); 
+        // console.log(articles); 
     })
+    // .then(() => {
+    //     articlesArray = Object.values(articles);
+    //     articleStories = [].concat(...articlesArray);
+    //     console.log(articleStories);
+    //     articlesCards = articleStories.map(makeCard);
+    //     console.log(articlesCards)
+    //     articleCards.forEach(story => {
+    //         cardsToPage.appendChild(story);
+    //     })
+    //     console.log(cardsToPage);
+    //     cardsDiv.appendChild(cardsToPage);
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // })
+    
+
+
+
     .then(() => {
         //get array of key values
         articlesKeys = Object.keys(articles);
-        console.log(articlesKeys);
+        // console.log(articlesKeys);
     })
     .then(() => {
         //foreach over key value array
@@ -107,13 +128,9 @@ axios.get('https://lambda-times-backend.herokuapp.com/articles')
     .then(() => {
         articleStories.forEach(story => {
             newCard = makeCard(story);
-            cardsDiv.appendChild(newCard);
+            cardsToPage.appendChild(newCard);
+            cardsDiv.appendChild(cardsToPage);
         })
-
-
-    })
-    .catch((err) => {
-        console.log(err);
     })
 
 
